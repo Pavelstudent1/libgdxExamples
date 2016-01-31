@@ -36,16 +36,16 @@ public class Player extends Actor{
 		super.act(delta);
 		
 		if (state == ACTOR_STATE.INIT){
-			//body.applyForce(Const.WORLD_GRAVITY, new Vector2(), true);
 			state = ACTOR_STATE.IN_AIR;
 		}
-		
 		
 		
 	}
 
 	public void jump() {
-		body.setLinearVelocity(0f, 50f);
+		if (state != ACTOR_STATE.IN_AIR){
+			body.setLinearVelocity(0f, 100f);
+		}
 	}
 	
 	

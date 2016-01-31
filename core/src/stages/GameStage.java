@@ -15,8 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import actors.Ground;
 import actors.Player;
 import utils.Const;
+import utils.InputKeyboard;
 
-public class GameStage extends Stage implements InputProcessor{
+public class GameStage extends Stage {
 	
 	private OrthographicCamera camera;
 	private Box2DDebugRenderer renderer;
@@ -39,7 +40,8 @@ public class GameStage extends Stage implements InputProcessor{
 		addActor(ground);
 		addActor(player);
 		
-		Gdx.input.setInputProcessor(this);
+//		Gdx.input.setInputProcessor(this);
+		Gdx.input.setInputProcessor(new InputKeyboard(player));
 	}
 	
 	@Override
@@ -55,10 +57,8 @@ public class GameStage extends Stage implements InputProcessor{
 		renderer.render(world, camera.combined);
 	}
 	
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		player.jump();
-		return true;
-	}
+	
+	
+	
 
 }
