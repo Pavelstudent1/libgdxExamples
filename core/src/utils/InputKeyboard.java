@@ -1,5 +1,6 @@
 package utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
@@ -13,14 +14,20 @@ public class InputKeyboard implements InputProcessor{
 		this.player = player;
 	}
 	
+	
 	@Override
 	public boolean keyDown(int keycode) {
 
 		switch (keycode) {
 		case Keys.UP:
-			player.jump();
+			player.jump = true;
 			break;
-
+		case Keys.LEFT:
+			player.left = true;
+			break;
+		case Keys.RIGHT:
+			player.right = true;
+			break;
 		default:
 			break;
 		}
@@ -30,7 +37,22 @@ public class InputKeyboard implements InputProcessor{
 
 	@Override
 	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
+
+		switch (keycode) {
+		case Keys.UP:
+			player.jump = false;
+			break;
+		case Keys.LEFT:
+			player.left = false;
+			break;
+		case Keys.RIGHT:
+			player.right = false;
+			break;
+
+		default:
+			break;
+		}
+		
 		return false;
 	}
 
@@ -42,7 +64,7 @@ public class InputKeyboard implements InputProcessor{
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 

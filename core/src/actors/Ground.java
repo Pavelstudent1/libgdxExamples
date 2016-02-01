@@ -3,6 +3,7 @@ package actors;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -24,7 +25,16 @@ public class Ground extends Actor{
 		body = world.createBody(bd);
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(width / 2, height / 2);
-		body.createFixture(shape, 0);
+		
+		FixtureDef fdef = new FixtureDef();
+		fdef.shape = shape;
+		fdef.density = 0.5f;
+		fdef.restitution = 0.1f;
+		fdef.friction = 0.5f;
+		fdef.filter.categoryBits = Const.GROUNDS_COLLISION;
+		fdef.filter.maskBits = Const.GROUNDS_COLLISION | Const.PLAYERS_COLLISION;
+		
+		body.createFixture(fdef);
 		shape.dispose();
 	}
 	
@@ -33,5 +43,8 @@ public class Ground extends Actor{
 		super.act(delta);
 	}
 	
+	public void setPosition(float x, float y, float angle){
+		body.setTransform(x, y, angle);
+	}
 	
 }

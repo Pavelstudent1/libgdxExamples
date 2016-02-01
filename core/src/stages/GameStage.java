@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import actors.Ground;
 import actors.Player;
+import utils.Collisions;
 import utils.Const;
 import utils.InputKeyboard;
 
@@ -24,8 +25,10 @@ public class GameStage extends Stage {
 	
 	private World world;
 	private Ground ground;
+	private Ground ground2;
 	private Player player;
 	private float accumulator = 0;
+	private InputKeyboard keyboard;
 	
 	public GameStage() {
 		camera = new OrthographicCamera(Const.APP_WIDTH, Const.APP_HEIGHT);
@@ -36,12 +39,17 @@ public class GameStage extends Stage {
 		
 		world = new World(Const.WORLD_GRAVITY, true);
 		ground = new Ground(world);
+		ground2 = new Ground(world);
+		ground2.setPosition(Const.GROUND_INIT_X + 150, 0f, 0f);
+		
 		player = new Player(world);
 		addActor(ground);
+		addActor(ground2);
 		addActor(player);
 		
-//		Gdx.input.setInputProcessor(this);
-		Gdx.input.setInputProcessor(new InputKeyboard(player));
+		keyboard = new InputKeyboard(player);
+		Gdx.input.setInputProcessor(keyboard);
+		world.setContactListener(new Collisions(player, ground));
 	}
 	
 	@Override
