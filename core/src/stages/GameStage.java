@@ -41,6 +41,7 @@ public class GameStage extends Stage {
 		ground = new Ground(world);
 		ground2 = new Ground(world);
 		ground2.setPosition(Const.GROUND_INIT_X + 150, 0f, 0f);
+		ground2.startLeftRightMove(10, 0.5f);
 		
 		player = new Player(world);
 		addActor(ground);

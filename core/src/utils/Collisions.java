@@ -26,6 +26,7 @@ public class Collisions implements ContactListener {
 		if (mask == 3){
 			p.setGrounded();
 		}
+		
 	}
 
 	@Override
