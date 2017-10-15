@@ -1,6 +1,5 @@
 package scrollUpShooter;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
@@ -13,17 +12,19 @@ import com.badlogic.gdx.utils.Pool;
 public class StageFirst extends Stage {
 
     private Actor mainActor;
-    private Pool<Rectangle> rectPool = new Pool<Rectangle>() {
-        @Override
-        protected Rectangle newObject() {
-            return new Rectangle();
-        }
-    };
+    private Pool<Rectangle> rectPool;
     private AssetManager assetManager;
 
     public StageFirst(Actor mainActor) {
         this.mainActor = mainActor;
+        rectPool = new Pool<Rectangle>() {
+            @Override
+            protected Rectangle newObject() {
+                return new Rectangle();
+            }
+        };
         addActor(mainActor);
+
     }
 
     @Override

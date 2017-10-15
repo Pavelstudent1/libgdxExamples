@@ -44,6 +44,7 @@ public class AirCraft extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        System.out.println("Aircraft X: " + getX() + " Y: " + getY());
         bullets.forEach(e -> e.draw(batch, parentAlpha));
         Texture texture = (Texture) assetManager.get("core/assets/aircraft.png");
         batch.draw(texture, getX(), getY());

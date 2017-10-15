@@ -2,11 +2,11 @@ package scrollUpShooter;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class InputHandler implements InputProcessor {
 
@@ -106,12 +106,21 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 
+        Viewport viewport = stage.getViewport();
+
+        float diffX = viewport.getScreenWidth() / viewport.getWorldWidth();
+        float diffY = viewport.getScreenHeight() / viewport.getWorldHeight();
+
         Array<Actor> actors = stage.getActors();
         Actor actor = null;
+        float translatedX = (screenX - viewport.getLeftGutterWidth()) / diffX;
+        float translatedY = Constants.SCREEN_HEIGHT - (screenY - viewport.getBottomGutterHeight
+                ()) / diffY; //inverted value, because scanning by Y goes from top to bottom,
+                             //but painting of objects by Y goes from bottom to top
         boolean overlap = false;
         for (Actor a : actors) {
             Rectangle ac = new Rectangle(a.getX(), a.getY(), a.getWidth(), a.getHeight());
-            overlap = ac.contains(screenX, Constants.SCREEN_HEIGHT - screenY);
+            overlap = ac.contains(translatedX, translatedY);
             if (overlap) {
                 actor = a;
                 break;
@@ -119,8 +128,8 @@ public class InputHandler implements InputProcessor {
         }
 
         if (overlap){
-            actor.setX(screenX - actor.getWidth() / 2);
-            actor.setY(Constants.SCREEN_HEIGHT - screenY - actor.getHeight() / 2);
+            actor.setX(translatedX - actor.getWidth() / 2);
+            actor.setY(translatedY - actor.getHeight() / 2);
         }
 
         return true;

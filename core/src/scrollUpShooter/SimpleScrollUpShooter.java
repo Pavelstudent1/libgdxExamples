@@ -29,16 +29,17 @@ public class SimpleScrollUpShooter extends ApplicationAdapter {
         stage = new StageFirst(mainActor);
         stage.setAssetManager(manager);
 
-        AirCraft actor2 = new AirCraft();
-        actor2.setAssetManager(manager);
-        actor2.setPosition(200, 10);
+//        AirCraft actor2 = new AirCraft();
+//        actor2.setAssetManager(manager);
+//        actor2.setPosition(200, 10);
+//
+//        stage.addActor(actor2);
 
-        stage.addActor(actor2);
-
+        OrthographicCamera cam = new OrthographicCamera();
+        cam.setToOrtho(false, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         stage.setDebugAll(true);
         stage.setViewport(new FitViewport(
-                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
-                new OrthographicCamera(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT)));
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, cam));
         inputHandler = new InputHandler(stage, mainActor);
         Gdx.input.setInputProcessor(inputHandler);
     }
