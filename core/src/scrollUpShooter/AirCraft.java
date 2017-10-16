@@ -16,7 +16,16 @@ public class AirCraft extends Actor {
     private Pool<AircraftBullet> barrel;
     private LinkedList<AircraftBullet> bullets;
 
+    /**
+     * Debug abilities
+     */
+    private boolean debug = true;
+    private float lastX;
+    private float lastY;
+
     public AirCraft() {
+        lastX = getX();
+        lastY = getY();
         setBounds(0, 0, 48, 48);
         setPosition(0, 0);
         barrel = new Pool<AircraftBullet>() {
@@ -44,7 +53,14 @@ public class AirCraft extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        System.out.println("Aircraft X: " + getX() + " Y: " + getY());
+        if (debug)
+        {
+            if (lastX != getX() || lastY != getY()){
+                System.out.println("Aircraft X: " + getX() + " Y: " + getY());
+                lastX = getX();
+                lastY = getY();
+            }
+        }
         bullets.forEach(e -> e.draw(batch, parentAlpha));
         Texture texture = (Texture) assetManager.get("core/assets/aircraft.png");
         batch.draw(texture, getX(), getY());
