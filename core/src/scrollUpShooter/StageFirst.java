@@ -9,11 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
+import java.util.Iterator;
+
 public class StageFirst extends Stage {
 
     private Actor mainActor;
     private Pool<Rectangle> rectPool;
     private AssetManager assetManager;
+    private Array<AircraftBullet> bullets;
+    private Array<EnemyAircraft> enemies;
 
     public StageFirst(Actor mainActor) {
         this.mainActor = mainActor;
@@ -24,7 +28,19 @@ public class StageFirst extends Stage {
             }
         };
         addActor(mainActor);
+        bullets = new Array<>();
+        enemies = new Array<>();
+    }
 
+    @Override
+    public void addActor(Actor actor) {
+        super.addActor(actor);
+
+        if (actor instanceof AircraftBullet) {
+            bullets.add((AircraftBullet) actor);
+        } else if (actor instanceof EnemyAircraft) {
+            enemies.add((EnemyAircraft) actor);
+        }
     }
 
     @Override
@@ -34,19 +50,44 @@ public class StageFirst extends Stage {
     }
 
     private void checkCollisions() {
-        Array<Actor> actors = getActors();
-        Rectangle fixture1 = rectPool.obtain();
-        fixture1.set(mainActor.getX(), mainActor.getY(), mainActor.getWidth(), mainActor
-                .getHeight());
-        for (int i = 1; i < actors.size; i++) {
-            Actor actor = actors.get(i);
-            Rectangle fixture2 = rectPool.obtain();
-            fixture2.set(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());
-            boolean isOverlap = Intersector.overlaps(fixture1, fixture2);
-            if (isOverlap) {
-                System.out.println("Overlap!");
+        /**
+         * Each bullet should check collision with each enemy vessel
+         */
+        for (AircraftBullet bullet : bullets) {
+            if (bullet.getY() >= Constants.SCREEN_HEIGHT) {
+                removeActor(bullet);
+//                bullet.remove();
+//                bullets.removeValue(bullet, false);
+                continue;
+            }
+            Rectangle bulFixture = rectPool.obtain();
+            bulFixture.set(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
+            for (EnemyAircraft enemy : enemies) {
+                Rectangle enemyFix = rectPool.obtain();
+                enemyFix.set(enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight());
+
+                boolean isOverlap = Intersector.overlaps(bulFixture, enemyFix);
+                if (isOverlap) {
+                    System.out.println("Bullet hit an enemy!");
+//                    bullet.remove();
+//                    bullets.removeValue(bullet, false);
+//                    enemy.remove();
+//                    enemies.removeValue(enemy, false);
+                    removeActor(bullet);
+                    removeActor(enemy);
+                    break;
+                }
             }
         }
+    }
+
+    public void removeActor(Actor actor) {
+        if (actor instanceof AircraftBullet) {
+            bullets.removeValue((AircraftBullet) actor, false);
+        } else if (actor instanceof EnemyAircraft) {
+            enemies.removeValue((EnemyAircraft) actor, false);
+        }
+        actor.remove();
     }
 
     @Override

@@ -29,15 +29,15 @@ public class SimpleScrollUpShooter extends ApplicationAdapter {
         stage = new StageFirst(mainActor);
         stage.setAssetManager(manager);
 
-//        AirCraft actor2 = new AirCraft();
-//        actor2.setAssetManager(manager);
-//        actor2.setPosition(200, 10);
-//
-//        stage.addActor(actor2);
+        EnemyAircraft actor2 = new EnemyAircraft();
+        actor2.setAssetManager(manager);
+        actor2.setPosition(200, 400);
+
+        stage.addActor(actor2);
 
         OrthographicCamera cam = new OrthographicCamera();
         cam.setToOrtho(false, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-        stage.setDebugAll(true);
+        stage.setDebugAll(false);
         stage.setViewport(new FitViewport(
                 Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, cam));
         inputHandler = new InputHandler(stage, mainActor);

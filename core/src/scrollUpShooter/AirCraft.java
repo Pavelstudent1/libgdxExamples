@@ -61,7 +61,7 @@ public class AirCraft extends Actor {
                 lastY = getY();
             }
         }
-        bullets.forEach(e -> e.draw(batch, parentAlpha));
+//        bullets.forEach(e -> e.draw(batch, parentAlpha));
         Texture texture = (Texture) assetManager.get("core/assets/aircraft.png");
         batch.draw(texture, getX(), getY());
     }
@@ -73,7 +73,9 @@ public class AirCraft extends Actor {
         bullet.setY(getY() + (getHeight() / 2));
         bullet.addAction(Actions.moveTo(bullet.getX(), Constants.SCREEN_HEIGHT,
                 Constants.BULLET_DURATION_BY_Y));
-        bullets.add(bullet);
+        getStage().addActor(bullet);
+        setZIndex(bullet.getZIndex());
+//        bullets.add(bullet);
     }
 
     public void setAssetManager(AssetManager assetManager) {
